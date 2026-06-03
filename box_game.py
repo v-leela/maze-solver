@@ -1,18 +1,18 @@
 import pygame
 pygame.init()
 
-# Set up the screen
+
 screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption("My Box")
 
-# Colors (RGB)
+
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 GREEN = (0, 255, 0)
 WHITE = (255, 255, 255)
 BLACK = (0,0,0)
 
-# Box properties
+
 box_x = 350
 box_y = 250
 box_width = 10
