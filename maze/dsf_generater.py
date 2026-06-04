@@ -25,6 +25,7 @@ def get_unvisited_neighbors(x, y):
         neighbors.append((x, y - 20))
     if y <= 623 and (x, y + 20) not in visited:       #down
         neighbors.append((x, y + 20))
+
     if x >= 23 and (x - 20, y) not in visited:        #left
         neighbors.append((x - 20, y))
     if x <= 623 and (x + 20, y) not in visited:       #right
@@ -45,26 +46,6 @@ while running:
         pygame.draw.line(screen, (0,234,0), (i,1), (i,662),2)
 
     ###random movement
-    """ direction=random.randint(1,4)
-    moved=False
-    old_x, old_y = box_x, box_y
-
-    if direction==1 and box_y>=4:
-        if (box_x,box_y-20) not in [(x,y) for x,y,a,b in coordinates]:
-            box_y-=20
-            moved=True
-    if direction==2 and box_y<=640:
-       if (box_x,box_y+20) not in [(x,y) for x,y,a,b in coordinates]:
-           box_y+=20
-           moved=True
-    if direction==3 and box_x>=4:
-        if (box_x-20,box_y) not in [(x,y) for x,y,a,b in coordinates]:
-           box_x-=20
-           moved=True
-    if direction==4 and box_x<=640:
-        if (box_x+20,box_y) not in [(x,y) for x,y,a,b in coordinates]:
-           box_x+=20
-           moved=True """
     neighbours=get_unvisited_neighbors(box_x, box_y)
     if neighbours:
         old_x,old_y=box_x,box_y
@@ -73,9 +54,7 @@ while running:
         path.append((box_x,box_y,old_x,old_y))
         coordinates.append((box_x, box_y, old_x, old_y))
 
-
-    
-    ###back tracking at the previous junction
+    ###back tracking at the previous cell
     elif len(path)>=2:
         box_x, box_y = path[-1][2],path[-1][3]
         path.pop()
@@ -99,5 +78,5 @@ while running:
     pygame.draw.rect(screen, (239,45,92), (box_x, box_y, box_width, box_height))
 
     pygame.display.flip()
-    pygame.time.delay(30)
-pygame.quit()  
+#    pygame.time.delay(30)
+pygame.quit()
