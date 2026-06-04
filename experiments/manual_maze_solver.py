@@ -12,6 +12,12 @@ box_height = 18
 
 cell_size=20
 
+pt_x=3
+pt_y=3
+pt_width = 18
+pt_height = 18
+
+ways={(box_x,box_y):[]}
 visited={(box_x,box_y)}
 coordinates = [(box_x, box_y, None, None)]
 path = [(box_x, box_y, None, None)]
@@ -46,6 +52,10 @@ while running:
     if neighbours:
         old_x,old_y=box_x,box_y
         box_x,box_y=random.choice(neighbours)
+        if (old_x,old_y) in ways:
+            ways[(old_x,old_y)].append((box_x,box_y))
+        else:
+            ways[(old_x,old_y)]=[(box_x,box_y)]
         visited.add((box_x,box_y))
         path.append((box_x,box_y,old_x,old_y))
         coordinates.append((box_x, box_y, old_x, old_y))
@@ -53,26 +63,44 @@ while running:
     ###back tracking at the previous cell
     elif len(path)>=2:
         box_x, box_y = path[-1][2],path[-1][3]
+        old_x, old_y=path[-1][0],path[-1][1]
         path.pop()
 
     ###coloring the path
     for x, y, from_x, from_y in coordinates:
         if from_x is None and from_y is None:
-            pygame.draw.rect(screen, (0,30,0), (x, y, box_width, box_height))
+            pygame.draw.rect(screen, (0,130,0), (x, y, box_width, box_height))
         elif from_y != y:  
             if from_y > y:  
-                pygame.draw.rect(screen, (0,30,0), (x, y, box_width, box_height + 2))
+                pygame.draw.rect(screen, (0,130,0), (x, y, box_width, box_height + 2))
             else: 
-                pygame.draw.rect(screen, (0,30,0), (x, y-2, box_width, box_height+2))
+                pygame.draw.rect(screen, (0,130,0), (x, y-2, box_width, box_height+2))
         elif from_x != x:  
             if from_x > x:  
-                pygame.draw.rect(screen, (0,30,0), (x, y, box_width + 2, box_height))
+                pygame.draw.rect(screen, (0,130,0), (x, y, box_width + 2, box_height))
             else:  
-                pygame.draw.rect(screen, (0,30,0), (x-2, y, box_width+2 , box_height))
+                pygame.draw.rect(screen, (0,130,0), (x-2, y, box_width+2 , box_height))
 
     ###box
-    pygame.draw.rect(screen, (0,0,0), (box_x, box_y, box_width, box_height))
+    pygame.draw.rect(screen, (0,200,0), (box_x, box_y, box_width, box_height))
+
+    ###solver
+    pygame.draw.rect(screen, (250,250,0), (pt_x, pt_y, pt_width, pt_height))
+    keys=pygame.key.get_pressed()
+
+    if keys[pygame.K_UP] and pt_y>=4:
+        if (pt_x,pt_y-20) in ways[(pt_x,pt_y)]:
+            pt_y-=20
+    if keys[pygame.K_DOWN] and pt_y<=640:
+        if (pt_x,pt_y+20) in ways[(pt_x,pt_y)]:
+            pt_y+=20
+    if keys[pygame.K_LEFT] and pt_x>=4:
+        if (pt_x-20,pt_y) in ways[(pt_x,pt_y)]:
+            pt_x-=20
+    if keys[pygame.K_RIGHT] and pt_x<=640:
+        if (pt_x+20,pt_y) in ways[(pt_x,pt_y)]:
+            pt_x+=20
 
     pygame.display.flip()
-#    pygame.time.delay(30)
+#    pygame.time.delay(100)
 pygame.quit()
